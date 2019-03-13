@@ -1,5 +1,10 @@
-﻿using Rocket.Core.Plugins;
+using Rocket.Core.Plugins;
+using Rocket.Unturned.Chat;
+using Rocket.Unturned.Player;
+using SDG.Unturned;
 using System;
+using System.Collections;
+using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 
 namespace ServerSwitcher
@@ -22,8 +27,9 @@ namespace ServerSwitcher
                 Logger.Log($"Name: {Server.Name}", ConsoleColor.Cyan);
                 Logger.Log($"IP & Port: {Server.IP}:{Server.Port}", ConsoleColor.Cyan);
                 Logger.Log($"Password: {Server.Password}", ConsoleColor.Cyan);
+                Logger.Log($"Delay: {Server.Delay}", ConsoleColor.Cyan);
                 Logger.Log("");
-            }
+            }                  
             Logger.Log("Successfully loaded ServerSwitcher, made by Mr.Kwabs.", ConsoleColor.Yellow);
         }
 
@@ -34,6 +40,14 @@ namespace ServerSwitcher
             base.Unload();
         }
 
+        public void StartSwitch(Server Server, UnturnedPlayer uPlayer) { StartCoroutine(DelaySwitch(Server, uPlayer)); }
+
+        private IEnumerator DelaySwitch(Server Server, UnturnedPlayer uPlayer)
+        {
+            UnturnedChat.Say(uPlayer, $"You will be moved in {Server.Delay} second(s).");
+            yield return new WaitForSeconds(Server.Delay);
+            uPlayer.Player.sendRelayToServer(Parser.getUInt32FromIP(Server.IP), Server.Port, Server.Password);
+        }
 
     }
 }
