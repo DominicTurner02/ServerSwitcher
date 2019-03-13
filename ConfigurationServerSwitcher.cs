@@ -1,4 +1,4 @@
-﻿using Rocket.API;
+using Rocket.API;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -13,7 +13,7 @@ namespace ServerSwitcher
         {
             Servers = new List<Server>()
             {
-                new Server() { Name = "Server1", IP = "127.0.0.1", Port = 27015, Password = "password"}
+                new Server() { Name = "Server1", IP = "127.0.0.1", Port = 27015, Password = "password", Delay = 5f }
             };
         }
     }
@@ -26,5 +26,6 @@ namespace ServerSwitcher
         public string IP;
         public ushort Port;
         public string Password;
+        public float Delay;
     }
 }
