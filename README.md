@@ -1,4 +1,4 @@
-# GroupRewards
+# ServerSwitcher
 Allows users to select and join a Server from a list whilst in a server.
 
 ## Configuration
