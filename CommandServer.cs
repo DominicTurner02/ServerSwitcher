@@ -1,9 +1,11 @@
-﻿using Rocket.API;
+using Rocket.API;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Chat;
 using System.Collections.Generic;
 using UnityEngine;
 using SDG.Unturned;
+using System;
+using System.Collections;
 
 namespace ServerSwitcher
 {
@@ -34,7 +36,7 @@ namespace ServerSwitcher
                 {
                     if (Server.Name.ToLower() == Command[0].ToLower())
                     {
-                        uPlayer.Player.sendRelayToServer(Parser.getUInt32FromIP(Server.IP), Server.Port, Server.Password);
+                        ServerSwitcher.Instance.StartSwitch(Server, uPlayer);
                         return;
                     }
                 }
