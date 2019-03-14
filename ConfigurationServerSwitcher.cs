@@ -13,7 +13,7 @@ namespace ServerSwitcher
         {
             Servers = new List<Server>()
             {
-                new Server() { Name = "Server1", IP = "127.0.0.1", Port = 27015, Password = "password", Delay = 5f }
+                new Server() { Name = "Server1", IP = "127.0.0.1", Port = 27015, Password = "password", Permission = "server1", Delay = 5f }
             };
         }
     }
@@ -26,6 +26,8 @@ namespace ServerSwitcher
         public string IP;
         public ushort Port;
         public string Password;
+        public string Permission;
         public float Delay;
+
     }
 }
