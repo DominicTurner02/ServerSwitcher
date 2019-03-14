@@ -27,6 +27,7 @@ namespace ServerSwitcher
                 Logger.Log($"Name: {Server.Name}", ConsoleColor.Cyan);
                 Logger.Log($"IP & Port: {Server.IP}:{Server.Port}", ConsoleColor.Cyan);
                 Logger.Log($"Password: {Server.Password}", ConsoleColor.Cyan);
+                Logger.Log($"Permission: serverswitcher.server.{Server.Permission}", ConsoleColor.Cyan);
                 Logger.Log($"Delay: {Server.Delay}", ConsoleColor.Cyan);
                 Logger.Log("");
             }                  
@@ -44,7 +45,7 @@ namespace ServerSwitcher
 
         private IEnumerator DelaySwitch(Server Server, UnturnedPlayer uPlayer)
         {
-            UnturnedChat.Say(uPlayer, $"You will be moved in {Server.Delay} second(s).");
+            UnturnedChat.Say(uPlayer, $"You will be moved in {Server.Delay} second(s).", Color.yellow);
             yield return new WaitForSeconds(Server.Delay);
             uPlayer.Player.sendRelayToServer(Parser.getUInt32FromIP(Server.IP), Server.Port, Server.Password);
         }
