@@ -21,7 +21,7 @@ Allows users to select and join a Server from a list whilst in a server.
 - `serverswitcher.servers` - Users with this permission can execute the `/Servers` command.
 - `serverswitcher.server` - Users with this permission can execute the `/Server` command.
 - `serverswitcher.server.{SeverPermission}` - Users with this permission can execute the `/Server` command with the selected Servers.
-- `serverswitcher.server.*` - Users with this permission can execute the `/Server` command with the all Servers.
+- `serverswitcher.server.*` - Users with this permission can execute the `/Server` command with all Servers.
 
 ## Demonstration:
 https://www.youtube.com/watch?v=yQFYHYOUL1U
