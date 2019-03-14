@@ -3,9 +3,6 @@ using Rocket.Unturned.Player;
 using Rocket.Unturned.Chat;
 using System.Collections.Generic;
 using UnityEngine;
-using SDG.Unturned;
-using System;
-using System.Collections;
 
 namespace ServerSwitcher
 {
@@ -36,8 +33,15 @@ namespace ServerSwitcher
                 {
                     if (Server.Name.ToLower() == Command[0].ToLower())
                     {
-                        ServerSwitcher.Instance.StartSwitch(Server, uPlayer);
-                        return;
+                        if (uPlayer.HasPermission("serverswitcher.server.*") || uPlayer.HasPermission($"serverswitcher.server.{Server.Permission}"))
+                        {
+                            ServerSwitcher.Instance.StartSwitch(Server, uPlayer);
+                            return;
+                        } else
+                        {
+                            UnturnedChat.Say(uPlayer, $"You do not have permission to go to this Server!", Color.red);
+                            return;
+                        }                        
                     }
                 }
                 UnturnedChat.Say(uPlayer, $"The Server {Command[0]} does not exist!", Color.red);
