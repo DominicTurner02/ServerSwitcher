@@ -26,7 +26,6 @@ namespace ServerSwitcher
     public class ServerSwitcher : RocketPlugin<ConfigurationServerSwitcher>
     {
         public static ServerSwitcher Instance;
-        public List<Region> Regions => RegionsPlugin.Instance?.Configuration?.Instance?.Regions ?? new List<Region>();
 
         protected override void Load()
         {         
