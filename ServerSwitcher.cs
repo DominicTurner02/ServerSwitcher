@@ -13,19 +13,31 @@ using System.Collections;
 using System.Net;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
+using RocketRegions;
+using RocketRegions.Model;
+using Rocket.API;
+using Rocket.Core;
+using System.Collections.Generic;
+using RocketRegions.Model.Flag;
+using ServerSwitcher.Flags;
 
 namespace ServerSwitcher
 {
     public class ServerSwitcher : RocketPlugin<ConfigurationServerSwitcher>
     {
         public static ServerSwitcher Instance;
+        public List<Region> Regions => RegionsPlugin.Instance?.Configuration?.Instance?.Regions ?? new List<Region>();
 
         protected override void Load()
-        {
+        {         
             base.Load();
             Instance = this;
             Logger.Log("");
             Logger.Log("Loading ServerSwitcher, made by Mr.Kwabs.", ConsoleColor.Yellow);
+            if (Configuration.Instance.RocketRegionsSupport)
+            {
+                RegionFlag.RegisterFlag("EnterServerSwitch", typeof(EnterServerSwitchFlag));
+            }
             Logger.Log("");
             Logger.Log($"Server List ({Configuration.Instance.Servers.Count} Total): ", ConsoleColor.Cyan);
             Logger.Log("");
@@ -36,10 +48,15 @@ namespace ServerSwitcher
                 Logger.Log($"Password: {Server.Password}", ConsoleColor.Cyan);
                 Logger.Log($"Permission: serverswitcher.server.{Server.Permission}", ConsoleColor.Cyan);
                 Logger.Log($"Delay: {Server.Delay}", ConsoleColor.Cyan);
+                if (Configuration.Instance.RocketRegionsSupport)
+                {
+                    Logger.Log($"Can be used in Rocket Region: {Server.CanBeUsedInRocketRegion}", ConsoleColor.Cyan);
+                }
                 Logger.Log("");
             }                  
             Logger.Log("Successfully loaded ServerSwitcher, made by Mr.Kwabs.", ConsoleColor.Yellow);
         }
+
 
         protected override void Unload()
         {      
@@ -48,12 +65,14 @@ namespace ServerSwitcher
             base.Unload();
         }
 
-        public void StartSwitch(Server Server, UnturnedPlayer uPlayer) { StartCoroutine(DelaySwitch(Server, uPlayer)); }
+        public void StartSwitch(Server Server, UnturnedPlayer uPlayer, bool Delay = false) { StartCoroutine(DelaySwitch(Server, uPlayer, Delay)); }
 
-        private IEnumerator DelaySwitch(Server Server, UnturnedPlayer uPlayer)
-        {         
-            UnturnedChat.Say(uPlayer, Translate("direct_transfer_countdown", Server.Delay), Color.yellow);
-
+        private IEnumerator DelaySwitch(Server Server, UnturnedPlayer uPlayer, bool Delay)
+        {
+            if (Delay)
+            {
+                UnturnedChat.Say(uPlayer, Translate("direct_transfer_countdown", Server.Delay), Color.yellow);
+            }
             string serverAddress = "";
             bool isIPV4 = false;
 
@@ -71,8 +90,10 @@ namespace ServerSwitcher
             {
                 serverAddress = Dns.GetHostAddresses(Server.IP)[0].ToString();
             }
-
-            yield return new WaitForSeconds(Server.Delay);
+            if (Delay)
+            {
+                yield return new WaitForSeconds(Server.Delay);
+            }
             uPlayer.Player.sendRelayToServer(Parser.getUInt32FromIP(serverAddress), Server.Port, Server.Password);
         }
 
