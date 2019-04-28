@@ -21,7 +21,7 @@ Allows users to select and join a Server from a list whilst in a server.
 - `/Server [Name]` - Selects a Server to join from the list.
   - The `Name` is the custom name you enter in the configuration.
 
-##*RocketRegions Only*
+***RocketRegions Only***
 - `/rflag [Region-Name] EnterServerSwitch "URL" -g [GROUP]` - When set, any Players that walk into that Region will be transferred to a different Server. *See [RocketRegions](https://harbor.rocketmod.net/plugins/regions/)* for more information.
 
 ## Permissions:
