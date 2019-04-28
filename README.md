@@ -1,7 +1,7 @@
 # ServerSwitcher
 Allows users to select and join a Server from a list whilst in a server.
 
-**This Plugin now supports [RocketRegions](https://harbor.rocketmod.net/plugins/regions/)**
+**This Plugin now supports [RocketRegions](https://harbor.rocketmod.net/plugins/regions/)**, thanks to [Trojaner](https://github.com/Trojaner) for allowing me to add this feature and to [M22](https://github.com/M22RG) for the idea!
 
 ## Configuration
 - `Servers` - A list of Servers with a custom Name and their IP, Port, Password, Permission and Delay.
