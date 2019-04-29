@@ -1,13 +1,9 @@
 using Rocket.API.Collections;
 using Rocket.Core.Plugins;
-using Rocket.Core.Steam;
 using Rocket.Unturned;
 using Rocket.Unturned.Chat;
-using Rocket.Unturned.Events;
-using Rocket.Unturned.Permissions;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
-using Steamworks;
 using System;
 using System.Collections;
 using System.Net;
@@ -15,8 +11,6 @@ using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 using RocketRegions;
 using RocketRegions.Model;
-using Rocket.API;
-using Rocket.Core;
 using System.Collections.Generic;
 using RocketRegions.Model.Flag;
 using ServerSwitcher.Flags;
@@ -26,6 +20,8 @@ namespace ServerSwitcher
     public class ServerSwitcher : RocketPlugin<ConfigurationServerSwitcher>
     {
         public static ServerSwitcher Instance;
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        public List<Region> Regions => RegionsPlugin.Instance?.Configuration?.Instance?.Regions ?? new List<Region>();
 
         protected override void Load()
         {         
@@ -37,6 +33,7 @@ namespace ServerSwitcher
             {
                 RegionFlag.RegisterFlag("EnterServerSwitch", typeof(EnterServerSwitchFlag));
             }
+            U.Events.OnPlayerConnected += OnPlayerConnected;
             Logger.Log("");
             Logger.Log($"Server List ({Configuration.Instance.Servers.Count} Total): ", ConsoleColor.Cyan);
             Logger.Log("");
@@ -63,6 +60,16 @@ namespace ServerSwitcher
             Instance = null;
             base.Unload();
         }
+
+        private void OnPlayerConnected(UnturnedPlayer uPlayer)
+        {
+            if (Configuration.Instance.RocketRegionsSupport)
+            {
+                uPlayer.GetComponent<SwitchPlayer>().JoinUnix = CurrentUnix();
+            }
+        }
+
+        public long CurrentUnix() { return (long)(DateTime.UtcNow - UnixEpoch).TotalSeconds; }
 
         public void StartSwitch(Server Server, UnturnedPlayer uPlayer, bool Delay = false) { StartCoroutine(DelaySwitch(Server, uPlayer, Delay)); }
 
