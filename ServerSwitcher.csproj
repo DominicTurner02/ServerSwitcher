@@ -66,6 +66,7 @@
     <Compile Include="CommandServers.cs" />
     <Compile Include="ConfigurationServerSwitcher.cs" />
     <Compile Include="Flags\EnterServerSwitchFlag.cs" />
+    <Compile Include="SwitchPlayer.cs" />
     <Compile Include="ServerSwitcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
