@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Rocket.Unturned.Player;
 using RocketRegions.Model.Flag;
@@ -16,6 +16,11 @@ namespace ServerSwitcher.Flags
 
         public override void OnRegionEnter(UnturnedPlayer uPlayer)
         {
+            if ((ServerSwitcher.Instance.CurrentUnix() - uPlayer.GetComponent<SwitchPlayer>().JoinUnix) < 3)
+            {
+                return;
+            }
+
             var pValue = GetValue<string>(Region.GetGroup(uPlayer));
             if (pValue == null)
                 return;
